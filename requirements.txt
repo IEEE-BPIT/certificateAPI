@@ -35,7 +35,6 @@ cryptography~=2.7
 lxml~=4.3.3
 pexpect~=4.8.0
 tornado~=6.0.4
-ipython~=7.18.1
 pytz~=2019.1
 numba~=0.51.2
 setuptools~=41.0.1
