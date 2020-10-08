@@ -47,4 +47,3 @@ def certificate(request, email):
         with fs.open('certificate.pdf') as pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
         return response
-
