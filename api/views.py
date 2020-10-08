@@ -10,6 +10,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import Participant
 from .serializers import ParticipantSerializer
 from rest_framework.decorators import api_view
+import pandas as pd
 
 
 @api_view(['GET', 'POST'])
@@ -37,12 +38,19 @@ def participant_list(request):
 @api_view(['GET'])
 def certificate(request, email):
     try:
-        participant = Participant.objects.get(email=email)
-    except Participant.DoesNotExist:
-        return JsonResponse({'message': 'The participant does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        details = pd.read_csv('participant_list.csv')
+        if email not in details['email'].values:
+            return JsonResponse({'message': 'The participant does not exist'}, status=status.HTTP_404_NOT_FOUND)
+        name = details.loc[details['email'] == email]['name'].values[0]
+        print(name)
 
+        # participant = Participant.objects.get(email=email)
+    # except Participant.DoesNotExist:
+    #     return JsonResponse({'message': 'The participant does not exist'}, status=status.HTTP_404_NOT_FOUND)
+    except BaseException as e:
+        print(f"{e}")
     if request.method == 'GET':
-        gen_certificate(participant.name)
+        gen_certificate(name)
         fs = FileSystemStorage()
         with fs.open('certificate.pdf') as pdf:
             response = HttpResponse(pdf, content_type='application/pdf')

@@ -3,7 +3,7 @@ import json
 import pandas as pd
 
 participants = pd.read_csv('participant_list.csv')
-URL = "http://localhost:8000/participant/"
+URL = "http://certificate-api.herokuapp.com/participant/"
 for i in range(len(participants)):
     data = {'name': participants.iloc[i]['name'],
             'email': participants.iloc[i]['email'],
